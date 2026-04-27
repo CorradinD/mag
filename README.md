@@ -38,10 +38,16 @@ $env:MAG_EXCEL_DATA_START_ROW="2"
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-Oppure:
+Su Windows usa il file batch, che non richiede modifiche alla policy PowerShell:
 
 ```powershell
-.\start.ps1
+.\start.bat
+```
+
+In alternativa, se vuoi usare `start.ps1` e PowerShell blocca gli script:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
 Dal PC server: `http://localhost:8000`.
