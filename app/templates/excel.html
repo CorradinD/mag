@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-title">
+  <div>
+    <h1>Excel offerte</h1>
+    <p>Aggiorna i prezzi nei file offerta esistenti usando gli articoli salvati nell'app.</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Configurazione attiva</h2>
+  <div class="config-grid">
+    <span>Cartella offerte</span><strong>{{ settings.offers_dir }}</strong>
+    <span>Backup</span><strong>{{ settings.backup_dir }}</strong>
+    <span>Foglio</span><strong>{{ settings.sheet_name }}</strong>
+    <span>Colonne</span><strong>SKU {{ settings.sku_column }}, prezzo {{ settings.price_column }}</strong>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Aggiorna file</h2>
+  <form method="post" action="/excel">
+    <div class="file-list">
+      {% for file in files %}
+        <label><input type="checkbox" name="files" value="{{ file.name }}"> {{ file.name }}</label>
+      {% else %}
+        <p class="empty">Nessun file .xlsx, .xlsm o .xls nella cartella offerte.</p>
+      {% endfor %}
+    </div>
+    <button type="submit" {% if not files %}disabled{% endif %}>Aggiorna prezzi</button>
+  </form>
+</section>
+
+{% if run %}
+<section>
+  <h2>Risultato aggiornamento #{{ run.id }}</h2>
+  <section class="metrics compact">
+    <div class="metric"><span>Stato</span><strong>{{ run.status }}</strong></div>
+    <div class="metric"><span>File aggiornati</span><strong>{{ run.files_updated }}/{{ run.files_total }}</strong></div>
+    <div class="metric"><span>Righe aggiornate</span><strong>{{ run.rows_updated }}</strong></div>
+    <div class="metric"><span>Errori</span><strong>{{ run.errors_count }}</strong></div>
+  </section>
+  <table>
+    <thead><tr><th>File</th><th>Riga</th><th>SKU</th><th>Stato</th><th>Prezzo</th><th>Messaggio</th></tr></thead>
+    <tbody>
+    {% for row in run.rows %}
+      <tr>
+        <td>{{ row.file_path }}</td>
+        <td>{{ row.row_number or "" }}</td>
+        <td>{{ row.sku or "" }}</td>
+        <td>{{ row.status }}</td>
+        <td>{% if row.new_price is not none %}{{ row.old_price }} -> {{ row.new_price }}{% endif %}</td>
+        <td>{{ row.message or "" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+{% endblock %}

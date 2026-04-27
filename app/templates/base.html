@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Magazzino Locale</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">Magazzino</a>
+    <nav>
+      <a href="/">Dashboard</a>
+      <a href="/articoli">Articoli</a>
+      <a href="/movimenti">Movimenti</a>
+      <a href="/excel">Excel offerte</a>
+    </nav>
+  </header>
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-title">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Situazione articoli, giacenze e ultimi movimenti.</p>
+  </div>
+</section>
+
+<section class="metrics">
+  <div class="metric"><span>Articoli</span><strong>{{ items|length }}</strong></div>
+  <div class="metric"><span>Valore magazzino</span><strong>{{ "%.2f"|format(total_value) }} €</strong></div>
+  <div class="metric"><span>Giacenze a zero</span><strong>{{ low_stock|length }}</strong></div>
+</section>
+
+<section class="grid two">
+  <div>
+    <h2>Giacenze</h2>
+    <table>
+      <thead><tr><th>SKU</th><th>Descrizione</th><th>Qtà</th><th>Prezzo</th></tr></thead>
+      <tbody>
+      {% for item in items %}
+        <tr>
+          <td>{{ item.sku }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ "%.2f"|format(item.price) }} €</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="empty">Nessun articolo inserito.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h2>Ultimi movimenti</h2>
+    <table>
+      <thead><tr><th>Data</th><th>SKU</th><th>Tipo</th><th>Qtà</th></tr></thead>
+      <tbody>
+      {% for movement in movements %}
+        <tr>
+          <td>{{ movement.created_at }}</td>
+          <td>{{ movement.sku }}</td>
+          <td>{{ movement.movement_type }}</td>
+          <td>{{ movement.quantity }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="empty">Nessun movimento registrato.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

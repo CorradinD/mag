@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-title">
+  <div>
+    <h1>Movimenti</h1>
+    <p>Carichi, scarichi e storico operativo del magazzino.</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Nuovo movimento</h2>
+  <form method="post" action="/movimenti" class="form-row">
+    <label>Articolo
+      <select name="sku" required>
+        {% for item in items %}
+          <option value="{{ item.sku }}">{{ item.sku }} - {{ item.description }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Tipo
+      <select name="movement_type" required>
+        <option value="carico">Carico</option>
+        <option value="scarico">Scarico</option>
+      </select>
+    </label>
+    <label>Quantità<input name="quantity" type="number" step="0.01" min="0.01" required></label>
+    <label>Operatore<input name="operator"></label>
+    <label>Note<input name="note"></label>
+    <button type="submit">Registra</button>
+  </form>
+</section>
+
+<section>
+  <h2>Storico</h2>
+  <table>
+    <thead><tr><th>Data</th><th>SKU</th><th>Descrizione</th><th>Tipo</th><th>Qtà</th><th>Operatore</th><th>Note</th></tr></thead>
+    <tbody>
+    {% for movement in movements %}
+      <tr>
+        <td>{{ movement.created_at }}</td>
+        <td>{{ movement.sku }}</td>
+        <td>{{ movement.description }}</td>
+        <td>{{ movement.movement_type }}</td>
+        <td>{{ movement.quantity }}</td>
+        <td>{{ movement.operator or "" }}</td>
+        <td>{{ movement.note or "" }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7" class="empty">Nessun movimento registrato.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
