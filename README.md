@@ -10,6 +10,14 @@ Applicativo web locale per gestire articoli, giacenze, movimenti di magazzino e 
 
 ## Installazione
 
+Se Python non è installato:
+
+```powershell
+winget install -e --id Python.Python.3.12
+```
+
+Poi chiudi e riapri il terminale.
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
